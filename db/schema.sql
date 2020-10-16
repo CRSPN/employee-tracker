@@ -1,49 +1,29 @@
-DROP DATABASE IF EXISTS employees;
+DROP DATABASE IF EXISTS employees_db;
+CREATE DATABASE employees_db;
+USE employees_db;
 
-CREATE DATABASE employees;
-
-USE employees;
-
-DROP TABLE IF EXISTS departments;
-DROP TABLE IF EXISTS roles;
-
-CREATE TABLE departments (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL
+CREATE TABLE departments(
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE roles (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE roles(
+  id INT AUTO_INCREMENT NOT NULL,
   title VARCHAR(30) NOT NULL,
-  salary INTEGER NOT NULL,
-  department_id INTEGER,
+  salary DECIMAL NOT NULL,
+  department_id INT,
+  PRIMARY KEY (id),
   FOREIGN KEY (department_id) REFERENCES departments(id)
 );
 
-CREATE TABLE employees (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE employees(
+  id INT AUTO_INCREMENT NOT NULL,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
-  role_id INTEGER,
-  manager_id INTEGER REFERENCES employees(id),
-  FOREIGN KEY (role_id) REFERENCES roles(id)
+  role_id INT,
+  manager_id INT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (role_id) REFERENCES roles(id),
+  FOREIGN KEY (manager_id) REFERENCES employees(id)
 );
-
-INSERT INTO departments (id, name)
-VALUES (1, 'Customer Service');
-
-INSERT INTO roles (id, title, salary, department_id)
-VALUES (1, 'Worker Person', 30000, 1);
-
-INSERT INTO roles (id, title, salary, department_id)
-VALUES (2, 'Manager Person', 30000, 1);
-
-INSERT INTO employees (id, first_name, last_name, role_id, manager_id)
-VALUES (1, 'tom', 'Person', 1, 2);
-
-INSERT INTO employees (id, first_name, last_name, role_id, manager_id)
-VALUES (2, 'jerry', 'Person', 2, NULL );
-
-UPDATE employees 
-SET role_id = 3 
-WHERE id = 1;
